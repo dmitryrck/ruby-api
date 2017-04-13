@@ -1,17 +1,24 @@
-# My App
+# README
 
-## Running
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
-Setup:
+Things you may want to cover:
 
-    % docker-compose run --rm -u root web bash -c "mkdir -p /bundle/vendor && chown ruby /bundle/vendor"
-    % docker-compose run --rm web bundle install
-    % docker-compose run --rm web bundle exec rake db:setup
+* Ruby version
 
-See `setup`.
+* System dependencies
 
-Run:
+* Configuration
 
-    % docker-compose up web
+* Database creation
 
-And go to [localhost:3000](http://localhost:3000).
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...

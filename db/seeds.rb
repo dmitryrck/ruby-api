@@ -1,7 +1,28 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+require "open-uri"
+
+# This file was ment to run only once.
+
+ActiveRecord::Base.transaction do
+  [
+    "movie",
+    "tv series",
+    "tv movie",
+    "video movie",
+    "tv mini series",
+    "video game",
+    "episode",
+  ].each do |kind|
+    KindType.create!(kind: kind)
+  end
+
+  page = open("http://www.imdb.com/chart/top")
+  content = File.read(page)
+  html = Nokogiri::HTML(content)
+  html.search("table.chart tbody tr").each do |tr|
+    Title.create!(
+      title: tr.search("td.titleColumn a text()").to_s,
+      production_year: tr.search("td.titleColumn span.secondaryInfo text()").to_s.delete("()"),
+      kind_id: 1,
+    )
+  end
+end

@@ -1,6 +1,6 @@
 class TitlesController < ApplicationController
   def index
-    @titles = Title.all
+    @titles = Title.page(params[:page])
     render json: @titles
   end
 

@@ -6,10 +6,11 @@ class TitlesController < ApplicationController
 
   def create
     @title = Title.new(title_params)
+
     if @title.save
       render json: @title
     else
-      render json: @title.errors, status: :bad_request
+      render json: @title.errors, status: :unprocessable_entity
     end
   end
 
@@ -19,7 +20,7 @@ class TitlesController < ApplicationController
     if @title.update(title_params)
       render json: @title
     else
-      render json: @title.errors, status: :bad_request
+      render json: @title.errors, status: :unprocessable_entity
     end
   end
 

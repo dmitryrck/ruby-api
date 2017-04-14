@@ -47,7 +47,7 @@ RSpec.describe TitlesController do
       it "should return correct http status" do
         post :create, params: {}
 
-        expect(response).to be_bad_request
+        expect(response.status).to eq 422
       end
     end
   end
@@ -88,7 +88,7 @@ RSpec.describe TitlesController do
       it "should return correct http status" do
         put :update, params: { id: ghost_in_the_shell.id, title: "" }
 
-        expect(response).to be_bad_request
+        expect(response.status).to eq 422
       end
     end
   end

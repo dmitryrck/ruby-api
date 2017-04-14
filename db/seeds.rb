@@ -12,17 +12,23 @@ ActiveRecord::Base.transaction do
     "video game",
     "episode",
   ].each do |kind|
-    KindType.create!(kind: kind)
+    kind_type = KindType.find_or_create_by!(kind: kind)
+    kind_type.save
   end
 
   page = open("http://www.imdb.com/chart/top")
   content = File.read(page)
   html = Nokogiri::HTML(content)
   html.search("table.chart tbody tr").each do |tr|
-    Title.create!(
+    title = Title.find_or_create_by!(
       title: tr.search("td.titleColumn a text()").to_s,
       production_year: tr.search("td.titleColumn span.secondaryInfo text()").to_s.delete("()"),
       kind_id: 1,
     )
+    title.save
   end
+
+  name = Name.find_or_initialize_by(name: "John")
+  name.md5sum = SecureRandom.hex
+  name.save
 end

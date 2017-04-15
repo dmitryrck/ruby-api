@@ -1,7 +1,7 @@
 version: "2"
 
 services:
-  web:
+  rails-web: &rails
     build: .
     volumes:
       - .:/app
@@ -10,11 +10,23 @@ services:
       - BUNDLE_PATH=/bundle/vendor
       - BUNDLE_APP_CONFIG=/app/.bundle
     user: ruby
-    command: bundle exec rails server -b 0.0.0.0
+    command: bundle exec puma
     ports:
       - "3000:3000"
     links:
       - db
+
+  rails-prod:
+    <<: *rails
+    environment:
+      - BUNDLE_PATH=/bundle/vendor
+      - BUNDLE_APP_CONFIG=/app/.bundle
+      - RAILS_ENV=production
+      - RACK_ENV=production
+      - SECRET_KEY_BASE=4585324beb5ffa2a3fc0464cca975a0e89f3b85de2bbd4bc86c3dcd61004dc06bda05eb7909e603b2eb53c24ec6110fc0a03741abb680d60b86a201e76327773
+    command: bundle exec puma -p 3001
+    ports:
+      - "3001:3001"
 
   db:
     image: postgres

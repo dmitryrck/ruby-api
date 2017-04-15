@@ -8,13 +8,15 @@ require "sequel"
 require "json"
 require "sinatra/json"
 
-Pathname.glob(Pathname.pwd.join('lib/sinatra-api/helpers/**/*.rb')).each do |entry|
-  require entry
+%i[helpers apps].each do |basedir|
+  Pathname.glob(Pathname.pwd.join("lib/sinatra-api/#{basedir}/**/*.rb")).each do |entry|
+    require entry
+  end
 end
 
-Pathname.glob(Pathname.pwd.join('lib/sinatra-api/apps/**/*.rb')).each do |entry|
-  require entry
-end
+autoload :KindType, "./lib/sinatra-api/models/kind_type"
+autoload :Title,    "./lib/sinatra-api/models/title"
+autoload :Name,     "./lib/sinatra-api/models/name"
 
 module SinatraApi
   class << self

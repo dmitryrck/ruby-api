@@ -11,8 +11,7 @@ module SinatraApi
     private
 
     def query_user_by_token(token)
-      SinatraApi.
-        db[:name].
+      Name.
         select(:id, :name, :md5sum).
         where(md5sum: token).
         limit(1).

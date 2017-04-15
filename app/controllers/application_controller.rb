@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  before_filter :restrict_access
+  before_action :restrict_access
 
   private
 

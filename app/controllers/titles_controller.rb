@@ -1,14 +1,14 @@
 class TitlesController < ApplicationController
   def index
     @titles = Title.page(params[:page])
-    render json: @titles
+    render json: @titles, only: %i[id title production_year], include: :kind
   end
 
   def create
     @title = Title.new(title_params)
 
     if @title.save
-      render json: @title
+      render json: @title, only: %i[id title production_year], include: :kind
     else
       render json: @title.errors, status: :unprocessable_entity
     end
@@ -18,7 +18,7 @@ class TitlesController < ApplicationController
     @title = Title.find(params[:id])
 
     if @title.update(title_params)
-      render json: @title
+      render json: @title, only: %i[id title production_year], include: :kind
     else
       render json: @title.errors, status: :unprocessable_entity
     end

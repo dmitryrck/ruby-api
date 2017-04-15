@@ -36,7 +36,13 @@ RSpec.describe TitlesController do
 
       it "respond with titles" do
         get "/titles", headers: headers
-        expect(JSON.parse(response.body)[0]).to include("title" => "Ghost in the Shell")
+
+        content = JSON.parse(response.body)[0]
+
+        expect(content).to include("id")
+        expect(content).to include("title" => "Ghost in the Shell")
+        expect(content).to include("production_year" => 2017)
+        expect(content).to include("kind")
       end
     end
 
@@ -57,8 +63,10 @@ RSpec.describe TitlesController do
 
           content = JSON.parse(response.body)
 
-          expect(content).to include("title" => "Logan")
           expect(content).to include("id")
+          expect(content).to include("title" => "Logan")
+          expect(content).to include("production_year" => 2017)
+          expect(content).to include("kind")
         end
       end
 
@@ -100,8 +108,12 @@ RSpec.describe TitlesController do
         it "should return the updated object" do
           put "/titles/#{ghost.id}", params: params.merge(id: ghost.id).to_json, headers: headers
 
-          expect(JSON.parse(response.body)).to include("title" => "Logan")
-          expect(JSON.parse(response.body)).to include("id" => ghost.id)
+          content = JSON.parse(response.body)
+
+          expect(content).to include("id" => ghost.id)
+          expect(content).to include("title" => "Logan")
+          expect(content).to include("production_year" => 2017)
+          expect(content).to include("kind")
         end
       end
 

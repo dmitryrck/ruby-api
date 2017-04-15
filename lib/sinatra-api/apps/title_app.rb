@@ -7,7 +7,14 @@ module SinatraApi
         titles = Title.
           select(:id, :title, :production_year, :kind_id).
           extension(:pagination).paginate(page, 10).
-          all.map(&:values)
+          all.map do |title|
+            {
+              id: title.id,
+              title: title.title,
+              production_year: title.production_year,
+              kind: title.kind_type.values
+            }
+          end
 
         json titles
       end

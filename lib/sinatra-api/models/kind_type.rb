@@ -1,5 +1,5 @@
 class KindType < Sequel::Model(:kind_type)
-  one_to_one :kind_type, key: :kind_id
+  one_to_many :titles
 
   def validate
     super

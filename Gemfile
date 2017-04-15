@@ -24,6 +24,13 @@ end
 
 group :test do
   gem "rails-controller-testing"
+  gem "sqlite3", require: false
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+# sinatra-api
+gem "sinatra", "2.0.0.rc2"
+gem "sinatra-contrib", "2.0.0.rc2"
+gem "rack-protection", "2.0.0.rc2"
+gem "sequel"

@@ -10,9 +10,9 @@ services:
       - BUNDLE_PATH=/bundle/vendor
       - BUNDLE_APP_CONFIG=/app/.bundle
     user: ruby
-    command: bundle exec puma
+    command: bundle exec puma -p 4000
     ports:
-      - "3000:3000"
+      - "4000:4000"
     links:
       - db
 
@@ -24,9 +24,15 @@ services:
       - RAILS_ENV=production
       - RACK_ENV=production
       - SECRET_KEY_BASE=4585324beb5ffa2a3fc0464cca975a0e89f3b85de2bbd4bc86c3dcd61004dc06bda05eb7909e603b2eb53c24ec6110fc0a03741abb680d60b86a201e76327773
-    command: bundle exec puma -p 3001
+    command: bundle exec puma -p 4001
     ports:
-      - "3001:3001"
+      - "4001:4001"
+
+  sinatra-web:
+    <<: *rails
+    command: bundle exec puma -p 5000 sinatra-api.ru
+    ports:
+      - "5000:5000"
 
   db:
     image: postgres

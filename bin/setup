@@ -5,6 +5,6 @@ set -xe
 # Uncomment this line and ensure your config/database.yml.sample is ready to run with docker.
 cp config/database.yml.sample config/database.yml
 
-docker-compose run --rm -u root web bash -c "mkdir -p /bundle/vendor && chown ruby /bundle/vendor"
-docker-compose run --rm web bundle install
-docker-compose run --rm web bundle exec rake db:setup
+docker-compose run --rm -u root rails-web bash -c "mkdir -p /bundle/vendor && chown ruby /bundle/vendor"
+docker-compose run --rm rails-web bundle install
+docker-compose run --rm rails-web bundle exec rake db:setup

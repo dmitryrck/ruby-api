@@ -30,7 +30,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # sinatra-api
-gem "sinatra", "2.0.0.rc2"
-gem "sinatra-contrib", "2.0.0.rc2"
-gem "rack-protection", "2.0.0.rc2"
-gem "sequel"
+gem "sinatra", "2.0.0.rc2", require: false
+gem "sinatra-contrib", "2.0.0.rc2", require: false
+gem "rack-protection", "2.0.0.rc2", require: false
+gem "sequel", require: false

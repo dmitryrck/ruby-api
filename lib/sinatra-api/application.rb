@@ -45,5 +45,6 @@ module SinatraApi
     end
 
     register SinatraApi::TitleApp
+    register SinatraApi::NameApp
   end
 end

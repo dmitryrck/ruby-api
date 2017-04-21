@@ -2,9 +2,11 @@ require "sinatra-api_helper"
 
 RSpec.describe SinatraApi::TitleApp, type: :feature do
   before do
+    kind = SinatraApi.db[:kind_type].insert(kind: "movie")
+
     SinatraApi.db[:title].insert(
       title: "Ghost in the Shell",
-      kind_id: 1,
+      kind_id: kind,
       production_year: 2017
     )
 
@@ -20,7 +22,7 @@ RSpec.describe SinatraApi::TitleApp, type: :feature do
       get "/titles"
 
       expect(last_response.content_type).to eq "application/json"
-      expect(last_response.body).to eq %([{"id":1,"title":"Ghost in the Shell","production_year":2017,"kind_id":1}])
+      expect(last_response.body).to eq %([{"id":1,"title":"Ghost in the Shell","production_year":2017,"kind":{"id":1,"kind":"movie"}}])
     end
   end
 

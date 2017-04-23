@@ -1,6 +1,6 @@
 class TitlesController < ApplicationController
   def index
-    @titles = Title.page(params[:page])
+    @titles = Title.order("id desc").page(params[:page])
     render json: @titles, only: %i[id title production_year], include: :kind
   end
 

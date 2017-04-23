@@ -7,6 +7,7 @@ module SinatraApi
         names = Name.
           select(:id, :name, :md5sum).
           extension(:pagination).paginate(page, 10).
+          order(Sequel.desc(:id)).
           all.map do |name|
             {
               id: name.id,

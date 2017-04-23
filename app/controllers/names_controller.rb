@@ -1,6 +1,6 @@
 class NamesController < ApplicationController
   def index
-    @names = Name.page(params[:page])
+    @names = Name.order("id desc").page(params[:page])
     render json: @names, only: %i[id name md5sum]
   end
 

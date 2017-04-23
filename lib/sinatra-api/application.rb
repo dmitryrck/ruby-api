@@ -36,7 +36,7 @@ module SinatraApi
 
     before do
       unless auth(env['HTTP_AUTHORIZATION'])
-        halt 403, {"Content-Type" => "application/json"}, '{"error":403,"message":"Forbidden"}'
+        halt 403
       end
     end
 
@@ -46,5 +46,13 @@ module SinatraApi
 
     register SinatraApi::TitleApp
     register SinatraApi::NameApp
+
+    error 403 do
+      json({ "error" => 403, "message" => "Forbidden" })
+    end
+
+    error 404 do
+      json({ "error" => 404, "message" => "Not Found" })
+    end
   end
 end

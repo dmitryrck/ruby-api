@@ -1,4 +1,6 @@
 class Title < Sequel::Model(:title)
+  PERMITTED_PARAMS = %w[title production_year kind_id]
+
   many_to_one :kind_type, key: :kind_id
 
   def validate

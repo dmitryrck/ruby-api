@@ -18,6 +18,47 @@ module SinatraApi
 
         json titles
       end
+
+      app.post "/titles" do
+        title = Title.new
+        title.set_fields JSON.parse(request.body.read), Title::PERMITTED_PARAMS
+
+        if title.valid? && title.save
+          hash = {
+            id: title.id,
+            title: title.title,
+            production_year: title.production_year,
+            kind: title.kind_type.values
+          }
+
+          json hash
+        else
+          status 422
+          json title.errors
+        end
+      end
+
+      app.put "/titles/:id" do
+        title = Title[params[:id]]
+
+        halt 404 unless title
+
+        title.set_fields JSON.parse(request.body.read), Title::PERMITTED_PARAMS
+
+        if title.valid? && title.save
+          hash = {
+            id: title.id,
+            title: title.title,
+            production_year: title.production_year,
+            kind: title.kind_type.values
+          }
+
+          json hash
+        else
+          status 422
+          json title.errors
+        end
+      end
     end
   end
 end

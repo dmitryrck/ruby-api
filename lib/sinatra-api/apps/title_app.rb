@@ -6,6 +6,7 @@ module SinatraApi
 
         titles = Title.
           select(:id, :title, :production_year, :kind_id).
+          eager(:kind_type).
           order(Sequel.desc(:id)).
           extension(:pagination).paginate(page, 10).
           all.map do |title|

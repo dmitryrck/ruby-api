@@ -9,7 +9,9 @@ class ApplicationController < ActionController::Base
     authenticate_or_request_with_http_token do |token, options|
       token = token.split(":")[-1]
 
-      Name.where(md5sum: token).any?
+      if name = Name.where(md5sum: token).limit(1)[0]
+        name
+      end
     end
   end
 end

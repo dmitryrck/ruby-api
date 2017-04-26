@@ -17,15 +17,58 @@ RSpec.describe SinatraApi::NameApp do
 
     context "GET /names" do
       before do
-        get "/names"
-      end
-
-      it "returns names" do
-        expect(last_response.body).to eq %([{"id":#{john_id},"name":"John","md5sum":"82144da02633cfba4287729a3c609720"}])
+        30.times do |number|
+          SinatraApi.db[:name].insert(
+            name: "Name##{number.succ}",
+            md5sum: SecureRandom.hex
+          )
+        end
       end
 
       it "should return correct content_type" do
+        get "/names"
+
         expect(last_response.content_type).to eq "application/json"
+      end
+
+      context "without page params" do
+        before { get "/names" }
+
+        it "returns names" do
+          names = JSON.parse(last_response.body).map { |json| json["name"] }
+
+          30.downto(21).each do |number|
+            expect(names).to include("Name##{number}")
+          end
+        end
+      end
+
+      context "with a page params" do
+        before { get "/names?page=#{page}" }
+
+        context "and request first page" do
+          let(:page) { 1 }
+
+          it "returns names" do
+            names = JSON.parse(last_response.body).map { |json| json["name"] }
+
+            30.downto(21).each do |number|
+              expect(names).to include("Name##{number}")
+            end
+          end
+        end
+
+        context "and request second page" do
+          let(:page) { 2 }
+
+          it "returns names" do
+            names = JSON.parse(last_response.body).map { |json| json["name"] }
+
+            20.downto(11).each do |number|
+              expect(names).to include("Name##{number}")
+            end
+          end
+        end
       end
     end
 

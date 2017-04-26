@@ -2,11 +2,12 @@ module SinatraApi
   module NameApp
     def self.registered(app)
       app.get "/names" do
-        page = params.fetch("page", 1).to_i
+        page = params.fetch("page", 1).to_i - 1
 
         names = Name.
           select(:id, :name, :md5sum).
-          extension(:pagination).paginate(page, 10).
+          limit(10).
+          offset(page * 10).
           order(Sequel.desc(:id)).
           all.map do |name|
             {

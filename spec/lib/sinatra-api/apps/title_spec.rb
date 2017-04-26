@@ -17,21 +17,59 @@ RSpec.describe SinatraApi::TitleApp do
 
     context "GET /titles" do
       before do
-        SinatraApi.db[:title].insert(
-          title: "Ghost in the Shell",
-          kind_id: kind_id,
-          production_year: 2017
-        )
-
-        get "/titles"
-      end
-
-      it "returns titles" do
-        expect(last_response.body).to eq %([{"id":1,"title":"Ghost in the Shell","production_year":2017,"kind":{"id":1,"kind":"movie"}}])
+        30.times do |number|
+          SinatraApi.db[:title].insert(
+            title: "Title##{number.succ}",
+            kind_id: kind_id,
+            production_year: 2017
+          )
+        end
       end
 
       it "should return correct content_type" do
+        get "/titles"
+
         expect(last_response.content_type).to eq "application/json"
+      end
+
+      context "without a page params" do
+        it "returns titles" do
+          get "/titles"
+
+          titles = JSON.parse(last_response.body).map { |json| json["title"] }
+
+          30.downto(21).each do |number|
+            expect(titles).to include("Title##{number}")
+          end
+        end
+      end
+
+      context "with a page params" do
+        before { get "/titles?page=#{page}" }
+
+        context "requesting first page" do
+          let(:page) { 1 }
+
+          it "returns titles" do
+            titles = JSON.parse(last_response.body).map { |json| json["title"] }
+
+            30.downto(21).each do |number|
+              expect(titles).to include("Title##{number}")
+            end
+          end
+        end
+
+        context "requesting second page" do
+          let(:page) { 2 }
+
+          it "returns titles of the second page" do
+            titles = JSON.parse(last_response.body).map { |json| json["title"] }
+
+            20.downto(11).each do |number|
+              expect(titles).to include("Title##{number}")
+            end
+          end
+        end
       end
     end
 
